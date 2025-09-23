@@ -1,0 +1,35 @@
+{
+  "name": "upload-server",
+  "version": "1.0.0",
+  "description": "NodeJS server to upload files",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.19.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luiz-Wendel/upload-server.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "cloudfare",
+    "R2",
+    "PostgreSQL",
+    "TypeScript",
+    "Docker",
+    "Zod",
+    "Swagger",
+    "Vitest",
+    "Drizzle",
+    "ORM"
+  ],
+  "author": "Luiz Wendel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luiz-Wendel/upload-server/issues"
+  },
+  "homepage": "https://github.com/Luiz-Wendel/upload-server#readme"
+}
