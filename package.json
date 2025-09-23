@@ -31,5 +31,10 @@
   "bugs": {
     "url": "https://github.com/Luiz-Wendel/upload-server/issues"
   },
-  "homepage": "https://github.com/Luiz-Wendel/upload-server#readme"
+  "homepage": "https://github.com/Luiz-Wendel/upload-server#readme",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
 }
