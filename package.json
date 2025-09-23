@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/Luiz-Wendel/upload-server#readme",
   "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
     "@types/node": "^24.5.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
