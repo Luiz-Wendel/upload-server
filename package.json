@@ -8,7 +8,9 @@
     "node": ">=22.19.0"
   },
   "scripts": {
-    "dev": "tsx watch --env-file .env src/infra/http/server.ts"
+    "dev": "tsx watch --env-file .env src/infra/http/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -37,7 +39,9 @@
     "@biomejs/biome": "^2.2.4",
     "@types/node": "^24.5.2",
     "tsx": "^4.20.5",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
