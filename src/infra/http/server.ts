@@ -5,7 +5,6 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastify from 'fastify';
 import {
   hasZodFastifySchemaValidationErrors,
-  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod';
@@ -15,6 +14,9 @@ import { env } from '@/env';
 
 // Routes
 import { uploadImageRoute } from './routes/upload-image';
+
+// utils
+import { transformSwaggerSchema } from './transform-swagger-schema';
 
 const server = fastify();
 
@@ -48,7 +50,7 @@ server.register(fastifySwagger, {
       version: '1.0.0',
     },
   },
-  transform: jsonSchemaTransform,
+  transform: transformSwaggerSchema,
 });
 server.register(fastifySwaggerUi, {
   routePrefix: '/docs',
@@ -62,5 +64,5 @@ server
     host: '0.0.0.0',
   })
   .then(() => {
-    console.log('HTTP server running!');
+    console.log(`HTTP server running! http://localhost:${env.PORT}/docs`);
   });
