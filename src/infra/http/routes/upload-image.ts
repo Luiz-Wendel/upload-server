@@ -5,6 +5,8 @@ import { uploadImage } from '@/app/services/upload-image';
 // db
 import { db } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
+// utils
+import { isRight, unwrapEither } from '@/utils/either';
 
 export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
   server.post(
@@ -16,7 +18,7 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
         tags: ['Upload'],
         consumes: ['multipart/form-data'],
         response: {
-          201: z.object({ uploadId: z.string() }),
+          201: z.null().describe('Upload successful'),
           400: z.object({ message: z.string() }),
         },
       },
@@ -32,13 +34,22 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
         return reply.status(400).send({ message: 'No file uploaded' });
       }
 
-      await uploadImage({
+      const result = await uploadImage({
         fileName: uploadedFile.filename,
         contentType: uploadedFile.mimetype,
         contentStream: uploadedFile.file,
       });
 
-      return reply.status(201).send({ uploadId: 'test' });
+      if (isRight(result)) {
+        return reply.status(201).send();
+      }
+
+      const error = unwrapEither(result);
+
+      switch (error.constructor.name) {
+        case 'InvalidFileFormatError':
+          return reply.status(400).send({ message: error.message });
+      }
     }
   );
 };
