@@ -2,9 +2,6 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import z from 'zod';
 // services
 import { uploadImage } from '@/app/services/upload-image';
-// db
-import { db } from '@/infra/db';
-import { schema } from '@/infra/db/schemas';
 // utils
 import { isRight, unwrapEither } from '@/utils/either';
 
@@ -41,6 +38,8 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
       });
 
       if (isRight(result)) {
+        console.log('result:', unwrapEither(result));
+
         return reply.status(201).send();
       }
 

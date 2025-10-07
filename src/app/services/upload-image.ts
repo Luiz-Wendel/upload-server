@@ -5,6 +5,8 @@ import { InvalidFileFormatError } from '@/app/services/errors/invalid-file-forma
 // db
 import { db } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
+// storage
+import { uploadFileToStorage } from '@/infra/storage/upload-file-to-storage';
 // utils
 import { type Either, makeLeft, makeRight } from '@/utils/either';
 
@@ -20,12 +22,7 @@ const allowedMimeTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
 
 export async function uploadImage(
   input: UploadImageInput
-): Promise<
-  Either<
-    InvalidFileFormatError,
-    { name: string; remoteKey: string; remoteUrl: string }
-  >
-> {
+): Promise<Either<InvalidFileFormatError, { url: string }>> {
   const { fileName, contentType, contentStream } =
     uploadImageInput.parse(input);
 
@@ -33,17 +30,18 @@ export async function uploadImage(
     return makeLeft(new InvalidFileFormatError());
   }
 
-  // TODO: upload image to storage (CloudFlare R2)
+  const { key, url } = await uploadFileToStorage({
+    folder: 'images',
+    fileName,
+    contentType,
+    contentStream,
+  });
 
   await db.insert(schema.uploads).values({
     name: fileName,
-    remoteKey: fileName,
-    remoteUrl: fileName,
+    remoteKey: key,
+    remoteUrl: url,
   });
 
-  return makeRight({
-    name: fileName,
-    remoteKey: fileName,
-    remoteUrl: fileName,
-  });
+  return makeRight({ url });
 }
