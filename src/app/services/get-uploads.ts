@@ -6,7 +6,7 @@ import { schema } from '@/infra/db/schemas';
 // utils
 import { type Either, makeRight } from '@/utils/either';
 
-const getUploadInput = z.object({
+const getUploadsInput = z.object({
   searchQuery: z.string().optional(),
   sortBy: z.enum(['createdAt']).optional(),
   sortDirection: z.enum(['asc', 'desc']).optional(),
@@ -14,9 +14,9 @@ const getUploadInput = z.object({
   pageSize: z.number().optional().default(20),
 });
 
-type GetUploadInput = z.input<typeof getUploadInput>;
+type GetUploadsInput = z.input<typeof getUploadsInput>;
 
-type GetUploadOutput = {
+type GetUploadsOutput = {
   uploads: {
     id: string;
     name: string;
@@ -28,10 +28,10 @@ type GetUploadOutput = {
 };
 
 export async function getUploads(
-  input: GetUploadInput
-): Promise<Either<never, GetUploadOutput>> {
+  input: GetUploadsInput
+): Promise<Either<never, GetUploadsOutput>> {
   const { searchQuery, sortBy, sortDirection, page, pageSize } =
-    getUploadInput.parse(input);
+    getUploadsInput.parse(input);
 
   const [uploads, [{ total }]] = await Promise.all([
     db
