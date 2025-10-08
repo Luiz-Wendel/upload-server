@@ -8,14 +8,9 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod';
-
-// env
 import { env } from '@/env';
-
-// Routes
+import { getUploadsRoute } from './routes/get-uploads';
 import { uploadImageRoute } from './routes/upload-image';
-
-// utils
 import { transformSwaggerSchema } from './transform-swagger-schema';
 
 const server = fastify();
@@ -57,6 +52,7 @@ server.register(fastifySwaggerUi, {
 });
 
 server.register(uploadImageRoute);
+server.register(getUploadsRoute);
 
 server
   .listen({
