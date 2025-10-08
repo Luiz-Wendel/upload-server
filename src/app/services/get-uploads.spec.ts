@@ -1,13 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import { Readable } from 'node:stream';
 import dayjs from 'dayjs';
-import { eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { db } from '@/infra/db';
-import { schema } from '@/infra/db/schemas';
+import { describe, expect, it } from 'vitest';
 import { makeUpload } from '@/test/factories/make-upload';
-import { isLeft, isRight, unwrapEither } from '@/utils/either';
-import { getUpload } from './get-uploads';
+import { isRight, unwrapEither } from '@/utils/either';
+import { getUploads } from './get-uploads';
 
 describe('Get uploads', () => {
   it('should be able to get uploads', async () => {
@@ -18,7 +14,7 @@ describe('Get uploads', () => {
     const upload4 = await makeUpload({ name: `${namePattern}.webp` });
     const upload5 = await makeUpload({ name: `${namePattern}.webp` });
 
-    const sut = await getUpload({
+    const sut = await getUploads({
       searchQuery: namePattern,
     });
 
@@ -41,7 +37,7 @@ describe('Get uploads', () => {
     const upload4 = await makeUpload({ name: `${namePattern}.webp` });
     const upload5 = await makeUpload({ name: `${namePattern}.webp` });
 
-    let sut = await getUpload({
+    let sut = await getUploads({
       searchQuery: namePattern,
       page: 1,
       pageSize: 3,
@@ -55,7 +51,7 @@ describe('Get uploads', () => {
       expect.objectContaining({ id: upload3.id }),
     ]);
 
-    sut = await getUpload({
+    sut = await getUploads({
       searchQuery: namePattern,
       page: 2,
       pageSize: 3,
@@ -92,7 +88,7 @@ describe('Get uploads', () => {
       createdAt: dayjs().subtract(2, 'days').toDate(),
     });
 
-    let sut = await getUpload({
+    let sut = await getUploads({
       searchQuery: namePattern,
       sortBy: 'createdAt',
       sortDirection: 'desc',
@@ -108,7 +104,7 @@ describe('Get uploads', () => {
       expect.objectContaining({ id: upload3.id }),
     ]);
 
-    sut = await getUpload({
+    sut = await getUploads({
       searchQuery: namePattern,
       sortBy: 'createdAt',
       sortDirection: 'asc',

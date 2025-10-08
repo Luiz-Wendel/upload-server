@@ -27,7 +27,7 @@ type GetUploadOutput = {
   total: number;
 };
 
-export async function getUpload(
+export async function getUploads(
   input: GetUploadInput
 ): Promise<Either<never, GetUploadOutput>> {
   const { searchQuery, sortBy, sortDirection, page, pageSize } =
