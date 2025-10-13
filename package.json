@@ -63,6 +63,7 @@
     "@types/node": "^24.5.2",
     "dotenv-cli": "^10.0.0",
     "drizzle-kit": "^0.31.5",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vite-tsconfig-paths": "^5.1.4",
