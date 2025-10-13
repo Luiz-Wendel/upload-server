@@ -1,0 +1,51 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, reopened, labeled, unlabeled, synchronize]
+
+jobs:
+  run-ci:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: docker
+          POSTGRES_PASSWORD: docker
+          POSTGRES_DB: upload_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+          registry-url: https://registry.npmjs.org/
+
+      - name: Show node and npm versions
+        run: node -v && npm -v
+
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
+          npm config set progress false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
