@@ -33,12 +33,10 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: 'npm'
+          registry-url: https://registry.npmjs.org/
 
       - name: Show node and npm versions
         run: node -v && npm -v
-
-      - name: Upgrade npm
-        run: npm i -g npm@10.9.0
 
       - name: Configure npm
         run: |
