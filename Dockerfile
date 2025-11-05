@@ -25,7 +25,7 @@ COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 RUN npm run build
 RUN npm prune --production
 
-FROM node:22.19.0-alpine AS deploy
+FROM gcr.io/distroless/nodejs20-debian12 AS deploy
 
 # set user
 USER 1000
@@ -37,16 +37,16 @@ COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/package.json ./package.json
 
 # declare envs
-ENV DATABASE_URL="postgresql://localhost"
-ENV CLOUDFLARE_ACCOUNT_ID="#"
-ENV CLOUDFLARE_ACCESS_KEY="#"
-ENV CLOUDFLARE_SECRET_ACCESS_KEY="#"
-ENV CLOUDFLARE_BUCKET="#"
-ENV CLOUDFLARE_PUBLIC_URL="http://localhost"
+# ENV DATABASE_URL="#"
+# ENV CLOUDFLARE_ACCOUNT_ID="#"
+# ENV CLOUDFLARE_ACCESS_KEY="#"
+# ENV CLOUDFLARE_SECRET_ACCESS_KEY="#"
+# ENV CLOUDFLARE_BUCKET="#"
+# ENV CLOUDFLARE_PUBLIC_URL="#"
 
 # expose port
 EXPOSE 3333
 
 # run startup commands (after build)
 # CMD ["npm", "start"]
-CMD ["node", "dist/infra/http/server.js"]
+CMD ["dist/infra/http/server.js"]
