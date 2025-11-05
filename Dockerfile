@@ -1,5 +1,9 @@
 # set image
-FROM node:22.19.0
+FROM node:22.19.0 AS base
+
+# RUN npm i -g pnpm
+
+FROM base AS dependencies
 
 # set working directory
 WORKDIR /usr/src/app
@@ -10,10 +14,24 @@ COPY package.json package-lock.json ./
 # run build/config commands
 RUN npm ci
 
+FROM base AS build
+
+WORKDIR /usr/src/app
+
 COPY . .
+# copy from dependencies
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 
 RUN npm run build
 RUN npm prune --production
+
+FROM node:22.19.0-alpine AS deploy
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/package.json ./package.json
 
 # declare envs
 ENV DATABASE_URL="postgresql://localhost"
@@ -27,4 +45,5 @@ ENV CLOUDFLARE_PUBLIC_URL="http://localhost"
 EXPOSE 3333
 
 # run startup commands (after build)
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+CMD ["node", "dist/infra/http/server.js"]
