@@ -1,0 +1,7 @@
+node_modules
+.env
+.env.test
+.env.example
+.pre-commit-config.yaml
+Dockerfile
+dist
