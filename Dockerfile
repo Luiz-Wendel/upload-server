@@ -27,6 +27,9 @@ RUN npm prune --production
 
 FROM node:22.19.0-alpine AS deploy
 
+# set user
+USER 1000
+
 WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist ./dist
