@@ -1,4 +1,4 @@
-name: Docker pipe
+name: Docker ECR pipe
 
 on:
   push:
