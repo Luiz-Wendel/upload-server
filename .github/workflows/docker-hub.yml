@@ -27,11 +27,18 @@ jobs:
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
 
+      # - name: Build and push image to Docker Hub
+      #   id: build-push-image
+      #   env:
+      #     DOCKER_HUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
+      #     IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
+      #   run: |
+      #     docker build -t $DOCKER_HUB_REPOSITORY:$IMAGE_TAG .
+      #     docker push $DOCKER_HUB_REPOSITORY:$IMAGE_TAG
+
       - name: Build and push image to Docker Hub
-        id: build-push-image
-        env:
-          DOCKER_HUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
-          IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
-        run: |
-          docker build -t $DOCKER_HUB_REPOSITORY:$IMAGE_TAG .
-          docker push $DOCKER_HUB_REPOSITORY:$IMAGE_TAG
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ steps.generate_tag.outputs.sha }}
