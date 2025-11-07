@@ -30,7 +30,7 @@ jobs:
       - name: Build and push image to Docker Hub
         id: build-push-image
         env:
-          DOCKER_HUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}
+          DOCKER_HUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository.name }}
           IMAGE_TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
           docker build -t $DOCKER_HUB_REPOSITORY:$IMAGE_TAG .
