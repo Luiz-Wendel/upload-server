@@ -1,9 +1,10 @@
 name: Docker ECR pipe
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # To run the workflow manually
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   build:
