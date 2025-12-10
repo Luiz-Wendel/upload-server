@@ -22,9 +22,11 @@ COPY . .
 # copy from dependencies
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 
-# RUN npm run build
-# RUN npm prune --production
-COPY ./dist ./dist
+# for github actions build
+RUN npm run build
+RUN npm prune --production
+# for local macos building (comment out for github actions)
+# COPY ./dist ./dist
 
 FROM gcr.io/distroless/nodejs20-debian12 AS deploy
 
