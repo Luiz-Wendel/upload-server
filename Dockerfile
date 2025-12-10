@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
 # run build/config commands
-RUN npm ci --omit=dev
+RUN npm ci
 
 FROM base AS build
 
