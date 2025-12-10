@@ -11,6 +11,7 @@ import {
 import { env } from '@/env';
 import { exportUploadsRoute } from './routes/export-uploads';
 import { getUploadsRoute } from './routes/get-uploads';
+import { healthCheckRoute } from './routes/health-check';
 import { uploadImageRoute } from './routes/upload-image';
 import { transformSwaggerSchema } from './transform-swagger-schema';
 
@@ -52,6 +53,7 @@ server.register(fastifySwaggerUi, {
   routePrefix: '/docs',
 });
 
+server.register(healthCheckRoute);
 server.register(uploadImageRoute);
 server.register(getUploadsRoute);
 server.register(exportUploadsRoute);

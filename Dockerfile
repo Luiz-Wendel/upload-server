@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
 # run build/config commands
-RUN npm ci
+RUN npm ci --omit=dev
 
 FROM base AS build
 
@@ -22,8 +22,9 @@ COPY . .
 # copy from dependencies
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 
-RUN npm run build
-RUN npm prune --production
+# RUN npm run build
+# RUN npm prune --production
+COPY ./dist ./dist
 
 FROM gcr.io/distroless/nodejs20-debian12 AS deploy
 
